@@ -1,1 +1,28 @@
 
+name: Cache Demo
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  cache-dependencies:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Prime cache 0c7ef5a
+        id: prime-cache-0c7ef5a
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            node_modules
+          key: cache-0c7ef5a
+
+      - name: Show cache status
+        run: echo "Cache hit: ${{ steps.prime-cache-0c7ef5a.outputs.cache-hit }}"
